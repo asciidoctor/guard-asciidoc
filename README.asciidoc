@@ -8,7 +8,7 @@ Some information about this plugin goes here...
 
 == Installation
 
-Hanging out in your git-scribe ebook's directory?  Great, you're good to go!  Get your `Gemfile` dressed:
+Set up your `Gemfile`:
 
     # Gemfile
     source :rubygems
@@ -16,18 +16,16 @@ Hanging out in your git-scribe ebook's directory?  Great, you're good to go!  Ge
     gem "guard"
     gem "guard-asciidoctor"
 
-and ready for success:
-
     $ bundle install
 
-then get your `Guardfile` up to snuff:
+Create a `Guardfile`:
 
     # Guardfile
     guard 'asciidoctor' do
-      watch (%r{book/})
+      watch (%r{asciidoc_folder/})
     end
 
-and hit the town!
+Start Guard:
 
     $ bundle exec guard
     Guard is now watching at '/Users/paul/asciidoc_folder'
