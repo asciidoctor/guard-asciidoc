@@ -1,0 +1,34 @@
+= Guard support for Asciidoctor
+
+Some information about this plugin goes here...
+
+*Asciidoctor*: https://github.com/asciidoctor/asciidoctor
+
+*Guard*: https://github.com/guard/guard
+
+== Installation
+
+Hanging out in your git-scribe ebook's directory?  Great, you're good to go!  Get your `Gemfile` dressed:
+
+    # Gemfile
+    source :rubygems
+    gem "asciidoctor"
+    gem "guard"
+    gem "guard-asciidoctor"
+
+and ready for success:
+
+    $ bundle install
+
+then get your `Guardfile` up to snuff:
+
+    # Guardfile
+    guard 'asciidoctor' do
+      watch (%r{book/})
+    end
+
+and hit the town!
+
+    $ bundle exec guard
+    Guard is now watching at '/Users/paul/asciidoc_folder'
+    Asciidoctor is waiting for asciidoc document changes...
