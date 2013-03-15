@@ -13,7 +13,7 @@ module Guard
 
     def run_on_change(paths)
       paths.each do |path|
-        UI.info "Rendering " + path
+        UI.info "Change detected in " + path
         Asciidoctor.render_file(path, :in_place => true)
       end
     end
