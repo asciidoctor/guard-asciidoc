@@ -13,14 +13,11 @@ module Guard
     end
 
     def run_on_change(paths)
-      puts "Got here..."
-      paths.each do |path|
-        UI.info "Change detected in " + path
-        # start a REPL session
-        binding.pry
-        Asciidoctor.render_file(path, :in_place => true)
+      paths.each do |file_path|
+        UI.info "Change detected in " + file_path
+#        binding.pry
+        Asciidoctor.render_file(file_path, :in_place => true)
         # Asciidoctor.render_file(path, :in_place => true, :attributes => {'stylesdir' => 'styles', 'stylesheet' => 'github.css'})
-        puts "Rendered AsciiDoc to HTML"
       end
     end
   end
