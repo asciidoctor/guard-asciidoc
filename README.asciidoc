@@ -34,3 +34,12 @@ Start Guard:
     $ bundle exec guard
     Guard is now watching at '/Users/paul/asciidoc_folder'
     Asciidoc is waiting for asciidoc document changes...
+
+History
+-------
+
+### 0.1
+
+ * First release
+ * Supports Asciidoctor 0.1.1
+ * Backends: html5

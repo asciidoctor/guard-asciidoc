@@ -1,5 +1,0 @@
-# Changelog
-
-## 0.0.1 - Mar 15, 2013
-
-- Creation!
