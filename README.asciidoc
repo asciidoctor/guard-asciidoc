@@ -41,8 +41,8 @@ See the link:https://github.com/asciidoctor/asciidoctor.github.com/blob/master/d
 History
 -------
 
-### 0.1.0
+### 0.0.5
 
- * First release
+ * Prerelease
  * Supports Asciidoctor 0.1.1
- * Backends: html5
+ * Backends: html5 only (no css stylesheet, yet)
