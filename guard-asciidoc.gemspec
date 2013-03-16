@@ -1,17 +1,17 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "guard/asciidoctor/version"
+require "guard/asciidoc/version"
 
 Gem::Specification.new do |s|
-  s.name        = "guard-asciidoctor"
+  s.name        = "guard-asciidoc"
   s.version     = '0.0.1'
   s.authors     = ["Paul Rayner"]
   s.email       = ["paul@virtual-genius.com"]
-  s.homepage    = "https://github.com/paulrayner/guard-asciidoctor"
-  s.summary     = %q{Guard::Asciidoctor automatically renders your Asciidoc documents}
+  s.homepage    = "https://github.com/paulrayner/guard-asciidoc"
+  s.summary     = %q{Guard::Asciidoc automatically renders your Asciidoc documents}
   s.description = %q{Watches a source folder and automatically renders AsciiDoc documents to HTML in a target folder}
 
-  s.rubyforge_project = "guard-asciidoctor"
+  s.rubyforge_project = "guard-asciidoc"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

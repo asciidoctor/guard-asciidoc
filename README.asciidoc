@@ -1,10 +1,14 @@
-= Guard support for Asciidoctor
+= Guard support for Asciidoc
 
 Some information about this plugin goes here...
 
-*Asciidoctor*: https://github.com/asciidoctor/asciidoctor
+The AsciiDoc plugin for Guard uses Asciidoctor for the rendering of AsciiDoc files to the specified format.
+
+*Asciidoc*: https://github.com/asciidoc/asciidoc
 
 *Guard*: https://github.com/guard/guard
+
+*Asciidoctor*: https://github.com/asciidoctor/asciidoctor
 
 == Installation
 
@@ -12,16 +16,16 @@ Set up your `Gemfile`:
 
     # Gemfile
     source :rubygems
-    gem "asciidoctor"
+    gem "asciidoc"
     gem "guard"
-    gem "guard-asciidoctor"
+    gem "guard-asciidoc"
 
     $ bundle install
 
 Create a `Guardfile`:
 
     # Guardfile
-    guard 'asciidoctor' do
+    guard 'asciidoc' do
       watch (%r{asciidoc_folder/})
     end
 
@@ -29,4 +33,4 @@ Start Guard:
 
     $ bundle exec guard
     Guard is now watching at '/Users/paul/asciidoc_folder'
-    Asciidoctor is waiting for asciidoc document changes...
+    Asciidoc is waiting for asciidoc document changes...
