@@ -4,12 +4,13 @@ require "guard/asciidoc/version"
 
 Gem::Specification.new do |s|
   s.name        = "guard-asciidoc"
-  s.version     = Guard::AsciidocVersion::VERSION
+  s.version     = Guard::AsciiDoc::VERSION
   s.authors     = ["Paul Rayner"]
   s.email       = ["paul@virtual-genius.com"]
   s.homepage    = "https://github.com/paulrayner/guard-asciidoc"
-  s.summary     = %q{Guard::Asciidoc automatically renders your Asciidoc documents}
+  s.summary     = %q{Guard::AsciiDoc automatically renders your AsciiDoc documents}
   s.description = %q{Watches a source folder and automatically renders AsciiDoc documents to HTML in a target folder}
+  s.licenses    = ['MIT']
 
   s.rubyforge_project = "guard-asciidoc"
 
