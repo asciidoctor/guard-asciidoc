@@ -4,7 +4,7 @@ require "guard/asciidoc/version"
 
 Gem::Specification.new do |s|
   s.name        = "guard-asciidoc"
-  s.version     = Guard::AsciiDoc::VERSION
+  s.version     = Guard::AsciiDocModule::VERSION
   s.authors     = ["Paul Rayner"]
   s.email       = ["paul@virtual-genius.com"]
   s.homepage    = "https://github.com/paulrayner/guard-asciidoc"
