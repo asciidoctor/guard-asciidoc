@@ -14,7 +14,8 @@ module Guard
       :eruby => 'erb',
       :doctype => 'article',
       :compact => false,
-      :attributes => {}
+      :attributes => {},
+      :always_build_all => false
     }
 
     def initialize(watchers = [], options = {})
@@ -61,10 +62,20 @@ module Guard
     def run_all
       # TODO is this too eager?
       # TODO does this honor the input path?
-      run_on_changes Watcher.match_files(self, Dir['*.{ad,asc,adoc,asciidoc}'])
+      run Watcher.match_files(self, Dir['*.{ad,asc,adoc,asciidoc}'])
     end
 
     def run_on_changes(paths)
+      opts = @options
+      
+      if opts[:always_build_all]
+        run_all
+      else
+        run paths
+      end
+    end
+
+    def run(paths)
       paths.each do |file_path|
         UI.info "Change detected: #{file_path}"
         opts = @options
