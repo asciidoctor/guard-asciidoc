@@ -56,7 +56,7 @@ In the pry console, you should see:
  Guard::AsciiDoc has started watching your files
  Guard is now watching at '/path/to/current/directory'
 
-To learn how to setup Guard to send changes directly to the browser, refer to the Asciidoctor tutorial https://github.com/asciidoctor/asciidoctor.github.com/blob/master/docs/editing-with-live-preview.adoc[Editing with Live Preview].
+To learn how to setup Guard to send changes directly to the browser, refer to the Asciidoctor tutorial http://asciidoctor.org/docs/editing-asciidoc-with-live-preview[Editing with Live Preview].
 
 == History
 
