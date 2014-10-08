@@ -16,7 +16,7 @@ module Guard
       :compact => false,
       :attributes => {},
       :always_build_all => false,
-      :ignore_dotfiles => true,
+      :ignore_hidden_files => true,
     }
 
     def initialize(watchers = [], options = {})
@@ -45,13 +45,13 @@ module Guard
         input_re = Regexp.escape merged_opts[:watch_dir]
       end
 
-      if merged_opts[:ignore_dotfiles]
-        ignore_dotfiles_re = '{0}[^.]'
+      if merged_opts[:ignore_hidden_files]
+        hidden_files_re = '{0}[^.]'
       else
-        ignore_dotfiles_re = ''
+        hidden_files_re = ''
       end
 
-      watch_re = %r{^#{input_re}.#{ignore_dotfiles_re}+\.(?:#{merged_opts[:watch_ext] * '|'})$}
+      watch_re = %r{^#{input_re}.#{hidden_files_re}+\.(?:#{merged_opts[:watch_ext] * '|'})$}
       watchers << ::Guard::Watcher.new(watch_re)
       merged_opts[:attributes] = {} unless merged_opts[:attributes]
       # set a flag to indicate running environment
