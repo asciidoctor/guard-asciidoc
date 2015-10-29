@@ -15,7 +15,7 @@ Set up your +Gemfile+:
 ----
 source 'https://rubygems.org'
 
-gem 'guard-asciidoc'
+gem 'guard-asciidoctor'
 gem 'rb-inotify', '~> 0.9'
 ----
 
@@ -28,7 +28,7 @@ Create a +Guardfile+ in the folder you want to watch:
 [source,ruby]
 .Guardfile
 ----
-guard :asciidoc
+guard :asciidoctor
 ----
 
 If you want to watch a folder below the current one, override the default:
@@ -36,7 +36,7 @@ If you want to watch a folder below the current one, override the default:
 [source,ruby]
 .Guardfile
 ----
-guard :asciidoc, :watch_dir => 'docs'
+guard :asciidoctor, :watch_dir => 'docs'
 ----
 
 You can also set AsciiDoc attributes:
@@ -44,7 +44,7 @@ You can also set AsciiDoc attributes:
 [source,ruby]
 .Guardfile
 ----
-guard :asciidoc, :attributes => {'toc' => ''}
+guard :asciidoctor, :attributes => {'toc' => ''}
 ----
 
 Start Guard:
