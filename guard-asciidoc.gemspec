@@ -33,8 +33,9 @@ Gem::Specification.new do |s|
   s.executables = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ['lib']
 
-  s.add_dependency 'guard', '>= 0.2.2'
-  s.add_dependency 'asciidoctor', '~> 0.1.1'
+  s.add_dependency 'guard', '~> 2.18.0'
+  s.add_dependency 'guard-compat', '~> 1.2.0'
+  s.add_dependency 'asciidoctor', '~> 2.0'
 
   s.add_development_dependency 'rake', '~> 13.0.0'
 end
