@@ -29,7 +29,14 @@ module Guard
       unless (@asciidoc_opts[:backend] = BACKEND_ALIASES[(backend = @asciidoc_opts[:backend])] || backend)
         @asciidoc_opts[:backend] = DEFAULT_BACKEND
       end
-      (@asciidoc_opts[:attributes] ||= {})['env-guard'] = ''
+      case (attributes = @asciidoc_opts[:attributes] ||= {})
+      when ::Hash
+        attributes['env-guard'] = ''
+      when ::Array
+        attributes << 'env-guard'
+      when ::String
+        @asciidoc_opts[:attributes] += ' env-guard'
+      end
       @asciidoc_opts[:safe] ||= :unsafe
       if (compiled_opts[:watchers] ||= []).empty? && (watch_dir = compiled_opts[:watch_dir])
         watch_dir = compiled_opts[:watch_dir] = (::Pathname.new watch_dir).cleanpath.to_s

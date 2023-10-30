@@ -5,6 +5,7 @@ describe Guard::AsciiDoc do
   let(:subject_with_watch_dir) { described_class.new watch_dir: 'docs' }
   let(:subject_with_backend) { described_class.new backend: 'docbook' }
   let(:subject_with_watchers) { described_class.new watchers: [(Guard::Watcher.new %r/\.asciidoc$/)] }
+  let(:subject_with_attributes_as_string) { described_class.new attributes: 'toc' }
 
   before do
     (allow Guard::Compat::UI).to (receive :info)
@@ -17,7 +18,7 @@ describe Guard::AsciiDoc do
       end
 
       it 'should create default watcher if no watchers are present' do
-        watchers = described_class.new.options[:watchers]
+        watchers = subject.options[:watchers]
         (expect watchers).not_to be_empty
         (expect watchers[0].pattern.to_s).to include 'adoc'
       end
@@ -36,6 +37,14 @@ describe Guard::AsciiDoc do
 
       it 'should allow Asciidoctor backend to be specified' do
         (expect subject_with_backend.asciidoc_opts).to include ({ backend: 'docbook5' })
+      end
+
+      it 'should initialize AsciiDoc attributes Hash and add env-guard entry' do
+        (expect subject.asciidoc_opts).to include ({ attributes: { 'env-guard' => '' } })
+      end
+
+      it 'should add env-guard to AsciiDoc attributes if specified as a string' do
+        (expect subject_with_attributes_as_string.asciidoc_opts).to include ({ attributes: 'toc env-guard' })
       end
     end
   end
