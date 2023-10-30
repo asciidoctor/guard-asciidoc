@@ -16,12 +16,14 @@ module Guard
     PLUGIN_KEYS = [:any_return, :group, :watchers]
     CONFIG_KEYS = DEFAULT_OPTIONS.keys
 
+    attr_reader :asciidoc_opts
+
     def initialize options = {}
       compiled_opts = DEFAULT_OPTIONS.merge
       compiled_opts[:watch_dir] = (options.delete :watch_dir) || '.' if options.key? :watch_dir
       compiled_opts.merge! options
       compiled_opts[:watch_dir] = '.' if compiled_opts[:watch_dir].to_s.empty?
-      @asciidoc_opts = compiled_opts.except *(PLUGIN_KEYS + CONFIG_KEYS)
+      @asciidoc_opts = compiled_opts.except(*(PLUGIN_KEYS + CONFIG_KEYS))
       unless (@asciidoc_opts[:backend] = BACKEND_ALIASES[(backend = @asciidoc_opts[:backend])] || backend)
         @asciidoc_opts[:backend] = DEFAULT_BACKEND
       end
@@ -41,8 +43,8 @@ module Guard
     def start
       Compat::UI.info 'Guard::AsciiDoc is now watching files'
       require 'asciidoctor'
-      require %(asciidoctor-#{@asciidoc_opts[:backend]}) unless (::Asciidoctor::Converter.for @asciidoc_opts[:backend])
-      if (requires = @asciidoc_opts.delete :requires)
+      require %(asciidoctor-#{asciidoc_opts[:backend]}) unless (::Asciidoctor::Converter.for asciidoc_opts[:backend])
+      if (requires = asciidoc_opts.delete :requires)
         Array(requires).each {|require_| require require_ }
       end
       run_all if options[:run_on_start]
@@ -66,7 +68,7 @@ module Guard
         if ::File.directory? filepath
           run (match_all filepath), force: true
         else
-          convert_asciidoc filepath, @asciidoc_opts, force: force
+          convert_asciidoc filepath, asciidoc_opts, force: force
         end
       end
       true
