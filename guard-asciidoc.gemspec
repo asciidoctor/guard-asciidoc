@@ -22,5 +22,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'guard', '>= 0.2.2'
   s.add_dependency 'asciidoctor', '~> 0.1.1'
 
-# Add development dependencies per https://github.com/guard/guard-markdown/blob/master/guard-markdown.gemspec
+  s.add_development_dependency 'rake', '~> 13.0.0'
 end
