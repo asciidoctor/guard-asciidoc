@@ -1,11 +1,4 @@
-*.gem
-.bundle
-Gemfile.lock
-pkg/* 
-.rvmrc
-
-## MAC OS
-.DS_Store
-.Trashes
-.com.apple.timemachine.supported
-.fseventsd
+/.bundle/
+/pkg/
+/.ruby-version
+/Gemfile.lock
