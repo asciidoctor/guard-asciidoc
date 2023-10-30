@@ -1,6 +1,5 @@
 module Guard
-  module AsciiDocModule
-    # Guard::AsciiDocModule version used for the Gem specification
+  module AsciiDoc
     VERSION = '0.0.5'
   end
 end

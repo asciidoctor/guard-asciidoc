@@ -1,0 +1,11 @@
+= Guard AsciiDoc Changelog
+:url-repo: https://github.com/asciidoctor/guard-asciidoc
+
+This document provides a curated view of the changes to Guard AsciiDoc in each release.
+For a detailed view of what has changed, refer to the {url-repo}/commits/main[commit history] on GitHub.
+
+== Unreleased
+
+* initial release
+* supports Asciidoctor 2
+* supports html backend

@@ -57,11 +57,3 @@ In the pry console, you should see:
  Guard is now watching at '/path/to/current/directory'
 
 To learn how to setup Guard to send changes directly to the browser, refer to the Asciidoctor tutorial http://asciidoctor.org/docs/editing-asciidoc-with-live-preview[Editing with Live Preview].
-
-== History
-
-.0.0.5
-
- * Prerelease
- * Supports Asciidoctor 0.1.1
- * Backends: html5 only (no stylesheet option, yet)
