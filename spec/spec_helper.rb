@@ -6,13 +6,14 @@ require 'guard/asciidoc'
 module Guard
   class Watcher
     attr_reader :pattern
+
     def initialize pattern
       @pattern = pattern
     end
   end
 end
 
-RSpec.configure do |config|
+RSpec.configure do
   def fixtures_dir
     File.join __dir__, 'fixtures'
   end

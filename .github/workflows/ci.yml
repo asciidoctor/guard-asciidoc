@@ -14,13 +14,22 @@ jobs:
         os: [ubuntu-latest]
         ruby: ['3.0', '3.2']
     runs-on: ${{ matrix.os }}
+    env:
+      BUNDLE_WITHOUT: lint
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+    - name: Enable lint (primary only)
+      if: matrix.primary
+      run: |
+        echo 'BUNDLE_WITHOUT=' >> $GITHUB_ENV
     - name: Install Ruby
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
+    - name: Run linter
+      if: matrix.primary
+      run: bundle exec rake lint
     - name: Run tests
       run: bundle exec ruby -w $(bundle exec ruby -e 'print File.join Gem.bindir, %q(rake)') spec

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'guard/compat/plugin'
 autoload :Pathname, 'pathname'
 
@@ -29,7 +31,7 @@ module Guard
       end
       (@asciidoc_opts[:attributes] ||= {})['env-guard'] = ''
       @asciidoc_opts[:safe] ||= :unsafe
-      if (watchers = compiled_opts[:watchers] = options[:watchers] || []).empty? && (watch_dir = compiled_opts[:watch_dir])
+      if (compiled_opts[:watchers] ||= []).empty? && (watch_dir = compiled_opts[:watch_dir])
         watch_dir = compiled_opts[:watch_dir] = (::Pathname.new watch_dir).cleanpath.to_s
         watch_re = watch_dir == '.' ? '' : %(^#{::Regexp.escape watch_dir}(?=#{FILE_SEPARATOR}))
         watch_re += compiled_opts[:watch_hidden] ? '.+?' : %((?:[^#{FILE_SEPARATOR}]|#{FILE_SEPARATOR}[^.])+?)
@@ -43,7 +45,7 @@ module Guard
     def start
       Compat::UI.info 'Guard::AsciiDoc is now watching files'
       require 'asciidoctor'
-      require %(asciidoctor-#{asciidoc_opts[:backend]}) unless (::Asciidoctor::Converter.for asciidoc_opts[:backend])
+      require %(asciidoctor-#{asciidoc_opts[:backend]}) unless ::Asciidoctor::Converter.for asciidoc_opts[:backend]
       if (requires = asciidoc_opts.delete :requires)
         Array(requires).each {|require_| require require_ }
       end
@@ -85,8 +87,8 @@ module Guard
         end
       end
       ::Asciidoctor.convert_file filepath, (to_dir ? (opts.merge mkdirs: true, to_dir: to_dir) : opts)
-    rescue => ex
-      Compat::UI.error ex.message
+    rescue => e
+      Compat::UI.error e.message
       raise :task_has_failed
     end
 
