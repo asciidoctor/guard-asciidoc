@@ -7,5 +7,3 @@ For a detailed view of what has changed, refer to the {url-repo}/commits/main[co
 == Unreleased
 
 * initial release
-* supports Asciidoctor 2
-* supports html backend

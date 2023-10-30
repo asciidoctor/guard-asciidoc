@@ -1,101 +1,96 @@
-require 'guard'
-require 'guard/guard'
-require 'guard/watcher'
-require 'asciidoctor'
+require 'guard/compat/plugin'
+autoload :Pathname, 'pathname'
 
 module Guard
-  class AsciiDoc < Guard
-
+  class AsciiDoc < Plugin
+    BACKEND_ALIASES = { 'html' => 'html5', 'docbook' => 'docbook5' }
+    DEFAULT_BACKEND = 'html5'
     DEFAULT_OPTIONS = {
-      :watch_dir => '.',
-      :watch_ext => %w(ad adoc asc asciidoc),
-      :run_on_start => false,
-      :backend => 'html5',
-      :eruby => 'erb',
-      :doctype => 'article',
-      :compact => false,
-      :attributes => {},
-      :always_build_all => false,
-      :ignore_hidden_files => true,
+      watch_dir: '.',
+      watch_ext: %w(adoc),
+      watch_hidden: false,
+      run_on_start: false,
+      always_build_all: false,
     }
+    FILE_SEPARATOR = ::File::SEPARATOR
+    PLUGIN_KEYS = [:any_return, :group, :watchers]
+    CONFIG_KEYS = DEFAULT_OPTIONS.keys
 
-    def initialize(watchers = [], options = {})
-      watchers = [] if !watchers
-      merged_opts = DEFAULT_OPTIONS.clone
-
-      if options.has_key? :watch_dir
-        merged_opts[:watch_dir] = options.delete :watch_dir
-        # set output to input if input is specified, but not output
-        unless options.has_key? :to_dir
-          merged_opts[:to_dir] = merged_opts[:watch_dir]
-        end
+    def initialize options = {}
+      compiled_opts = DEFAULT_OPTIONS.merge
+      compiled_opts[:watch_dir] = (options.delete :watch_dir) || '.' if options.key? :watch_dir
+      compiled_opts.merge! options
+      compiled_opts[:watch_dir] = '.' if compiled_opts[:watch_dir].to_s.empty?
+      @asciidoc_opts = compiled_opts.except *(PLUGIN_KEYS + CONFIG_KEYS)
+      unless (@asciidoc_opts[:backend] = BACKEND_ALIASES[(backend = @asciidoc_opts[:backend])] || backend)
+        @asciidoc_opts[:backend] = DEFAULT_BACKEND
       end
-
-      merged_opts.merge! options
-
-      # house cleaning
-      merged_opts[:watch_dir] = '.' if merged_opts[:watch_dir].to_s.empty?
-      merged_opts.delete(:to_dir) if (merged_opts[:to_dir] == '.' || merged_opts[:to_dir].to_s.empty?)
-
-      if merged_opts[:watch_dir] == '.'
-        input_re = ''
-      else
-        merged_opts[:watch_dir].chomp!('/') while merged_opts[:watch_dir].end_with?('/')
-        merged_opts[:watch_dir] << '/'
-        input_re = Regexp.escape merged_opts[:watch_dir]
+      (@asciidoc_opts[:attributes] ||= {})['env-guard'] = ''
+      @asciidoc_opts[:safe] ||= :unsafe
+      if (watchers = compiled_opts[:watchers] = options[:watchers] || []).empty? && (watch_dir = compiled_opts[:watch_dir])
+        watch_dir = compiled_opts[:watch_dir] = (::Pathname.new watch_dir).cleanpath.to_s
+        watch_re = watch_dir == '.' ? '' : %(^#{::Regexp.escape watch_dir}(?=#{FILE_SEPARATOR}))
+        watch_re += compiled_opts[:watch_hidden] ? '.+?' : %((?:[^#{FILE_SEPARATOR}]|#{FILE_SEPARATOR}[^.])+?)
+        watch_re += %((?:#{compiled_opts[:watch_ext].join '|'})$)
+        watch_rx = ::Regexp.new watch_re
+        compiled_opts[:watchers] = [(Watcher.new watch_rx)]
       end
-
-      if merged_opts[:ignore_hidden_files]
-        hidden_files_re = '{0}[^.]'
-      else
-        hidden_files_re = ''
-      end
-
-      watch_re = %r{^#{input_re}.#{hidden_files_re}+\.(?:#{merged_opts[:watch_ext] * '|'})$}
-      watchers << ::Guard::Watcher.new(watch_re)
-      merged_opts[:attributes] = {} unless merged_opts[:attributes]
-      # set a flag to indicate running environment
-      merged_opts[:attributes]['guard'] = ''
-
-      super watchers, merged_opts
+      super compiled_opts
     end
 
     def start
-      UI.info 'Guard::AsciiDoc has started watching your files'
-      require @options[:eruby]
-      run_all if @options[:run_on_start]
+      Compat::UI.info 'Guard::AsciiDoc is now watching files'
+      require 'asciidoctor'
+      require %(asciidoctor-#{@asciidoc_opts[:backend]}) unless (::Asciidoctor::Converter.for @asciidoc_opts[:backend])
+      if (requires = @asciidoc_opts.delete :requires)
+        Array(requires).each {|require_| require require_ }
+      end
+      run_all if options[:run_on_start]
     end
 
     def run_all
-      # TODO is this too eager?
-      # TODO does this honor the input path?
-      run Watcher.match_files(self, Dir['*.{ad,asc,adoc,asciidoc}'])
+      run match_all, force: true
     end
 
-    def run_on_changes(paths)
-      opts = @options
-
-      if opts[:always_build_all]
-        run_all
-      else
-        run paths
-      end
+    def run_on_changes paths
+      options[:always_build_all] ? run_all : (run paths)
     end
 
-    def run(paths)
-      paths.each do |file_path|
-        UI.info "Change detected: #{file_path}"
-        opts = @options
-        if opts.has_key? :to_dir
-          opts[:to_dir] = File.join(Dir.pwd, opts[:to_dir])
+    alias run_on_additions run_on_changes
+    alias run_on_modifications run_on_changes
+
+    private
+
+    def run paths, force: nil
+      paths.each do |filepath|
+        if ::File.directory? filepath
+          run (match_all filepath), force: true
         else
-          opts[:in_place] = true
+          convert_asciidoc filepath, @asciidoc_opts, force: force
         end
-        opts[:safe] = Asciidoctor::SafeMode::SAFE
-        # TODO if first file fails, still process remaining
-        Asciidoctor.render_file(file_path, opts)
       end
       true
+    end
+
+    def convert_asciidoc filepath, opts, force: nil
+      Compat::UI.info %(Converting#{force ? '' : ' changed'} file: #{filepath})
+      if (to_dir = opts[:to_dir])
+        filepath_segments = (::Pathname.new filepath).each_filename.to_a
+        if (watch_dir = options[:watch_dir]) != '.' && watch_dir == filepath_segments[0]
+          to_dir = File.join [to_dir] + (filepath_segments.slice 1...-1)
+        else
+          to_dir = File.join [to_dir] + (filepath_segments.slice 0...-1)
+        end
+      end
+      ::Asciidoctor.convert_file filepath, (to_dir ? (opts.merge mkdirs: true, to_dir: to_dir) : opts)
+    rescue => ex
+      Compat::UI.error ex.message
+      raise :task_has_failed
+    end
+
+    def match_all from = nil
+      glob = from ? (::File.join from, '**', '*.*') : (::File.join '**', '*.*')
+      (Compat.matching_files self, ::Dir[glob]).select {|it| ::File.file? it }
     end
   end
 end

@@ -8,7 +8,7 @@ end
 
 Gem::Specification.new do |s|
   s.name = 'guard-asciidoc'
-  s.version = Guard::AsciiDoc::VERSION
+  s.version = Guard::AsciiDoc_::VERSION
   s.summary = 'Guard::AsciiDoc automatically converts your AsciiDoc documents.'
   s.description = 'Watches the specified source folder and automatically converts AsciiDoc documents to the backend format into a target directory.'
   s.authors = ['Paul Rayner', 'Dan Allen']

@@ -1,0 +1,11 @@
+# options:
+# :watch_dir - sets which directory to watch if no watches are specified
+# :watch_ext - sets which file extensions to watch if no watches are specified
+# :watch_hidden - if true, sets whether to watch hidden files
+# :run_on_start - if true, run when Guard is starting; otherwise, wait for a change
+# :always_build_all - if true, always build all files instead of files which changed
+guard :asciidoc do
+  # uncomment to customize the watch patterns; alternately, use :watch_dir to change which directory the plugin watches
+  #watch %r{^docs/.+\.adoc$}
+  #watch 'README.adoc'
+end
