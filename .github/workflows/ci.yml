@@ -2,8 +2,10 @@ name: CI
 on:
   push:
     branches: [main]
+    paths-ignore: ['*.adoc']
   pull_request:
     branches: [main]
+    paths-ignore: ['*.adoc']
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
