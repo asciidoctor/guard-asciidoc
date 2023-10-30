@@ -86,5 +86,18 @@ describe Guard::AsciiDoc do
         (expect (Pathname.new fixture_file 'test.html')).to exist
       end
     end
+
+    context 'with one directory' do
+      after do
+        File.unlink fixture_file 'test.html'
+      end
+
+      it 'should convert file' do
+        (expect Guard::Compat).to (receive :matching_files).and_return [(fixture_file 'test.adoc')]
+        subject.start
+        subject.run_on_changes [fixtures_dir]
+        (expect (Pathname.new fixture_file 'test.html')).to exist
+      end
+    end
   end
 end
