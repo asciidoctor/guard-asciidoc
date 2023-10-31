@@ -35,7 +35,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'guard', '~> 2.18.0'
   s.add_dependency 'guard-compat', '~> 1.2.0'
-  s.add_dependency 'asciidoctor', '~> 2.0'
+  s.add_dependency 'asciidoctor', ['>= 2.0.0', '< 3.0.0']
 
   s.add_development_dependency 'rake', '~> 13.1.0'
   s.add_development_dependency 'rspec', '~> 3.12.0'
