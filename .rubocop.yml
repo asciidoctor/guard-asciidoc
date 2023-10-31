@@ -270,6 +270,9 @@ RSpec/MetadataStyle:
 RSpec/MultipleExpectations:
   Enabled: true
   Max: 15
+RSpec/MultipleMemoizedHelpers:
+  Enabled: true
+  Max: 10
 RSpec/NamedSubject:
   Enabled: false
 RSpec/NoExpectationExample:
