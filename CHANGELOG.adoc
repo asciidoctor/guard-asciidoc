@@ -9,6 +9,7 @@ For a detailed view of what has changed, refer to the {url-repo}/commits/main[co
 Fixed::
 
 * throw instead of raise :task_has_failed on failure
+* don't fail if gem for unknown backend is unavailable
 
 == 1.0.0 (2023-10-30) - @mojavelinux
 

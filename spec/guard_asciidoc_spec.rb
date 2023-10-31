@@ -4,6 +4,7 @@ describe Guard::AsciiDoc do
   let(:subject_with_options) { described_class.new run_on_start: true }
   let(:subject_with_watch_dir) { described_class.new watch_dir: 'docs' }
   let(:subject_with_backend) { described_class.new backend: 'docbook' }
+  let(:subject_with_unknown_backend) { described_class.new backend: 'jats' }
   let(:subject_with_watchers) { described_class.new watchers: [(Guard::Watcher.new %r/\.asciidoc$/)] }
   let(:subject_with_attributes_as_string) { described_class.new attributes: 'toc' }
 
@@ -55,6 +56,11 @@ describe Guard::AsciiDoc do
         (expect subject).not_to (receive :run_all)
         subject.start
         (expect defined? Asciidoctor).to be_truthy
+      end
+
+      it 'should not fail if gem for backend is not available' do
+        (expect subject_with_unknown_backend).not_to (receive :run_all)
+        subject_with_unknown_backend.start
       end
     end
 

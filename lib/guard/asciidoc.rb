@@ -52,7 +52,10 @@ module Guard
     def start
       Compat::UI.info 'Guard::AsciiDoc is now watching files'
       require 'asciidoctor'
-      require %(asciidoctor-#{asciidoc_opts[:backend]}) unless ::Asciidoctor::Converter.for asciidoc_opts[:backend]
+      if !(::Asciidoctor::Converter.for asciidoc_opts[:backend]) &&
+          (::Gem.loaded_specs.key? (converter_gem = %(asciidoctor-#{asciidoc_opts[:backend]})))
+        require converter_gem
+      end
       if (requires = asciidoc_opts.delete :requires)
         Array(requires).each {|require_| require require_ }
       end
