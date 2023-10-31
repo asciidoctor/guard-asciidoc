@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        ruby: ['3.0', '3.2']
+        ruby: [jruby-9.4, '3.0', '3.2']
         exclude:
         # remove entry to mark as primary
         - os: ubuntu-latest
