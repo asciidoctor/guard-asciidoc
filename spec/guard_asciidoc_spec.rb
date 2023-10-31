@@ -99,5 +99,15 @@ describe Guard::AsciiDoc do
         (expect (Pathname.new fixture_file 'test.html')).to exist
       end
     end
+
+    context 'failure' do
+      it 'should throw :task_has_failed on conversion failure' do
+        (allow Guard::Compat::UI).to receive :error
+        subject.start
+        expect do
+          subject.run_on_changes [(fixture_file 'no-such-file.adoc')]
+        end.to throw_symbol :task_has_failed
+      end
+    end
   end
 end

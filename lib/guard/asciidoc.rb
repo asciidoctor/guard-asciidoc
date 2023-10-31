@@ -96,7 +96,7 @@ module Guard
       ::Asciidoctor.convert_file filepath, (to_dir ? (opts.merge mkdirs: true, to_dir: to_dir) : opts)
     rescue => e
       Compat::UI.error e.message
-      raise :task_has_failed
+      throw :task_has_failed
     end
 
     def match_all from = nil

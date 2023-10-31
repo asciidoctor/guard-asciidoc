@@ -4,10 +4,16 @@
 This document provides a curated view of the changes to Guard AsciiDoc in each release.
 For a detailed view of what has changed, refer to the {url-repo}/commits/main[commit history] on GitHub.
 
+== Unreleased
+
+Fixed::
+
+* throw instead of raise :task_has_failed on failure
+
 == 1.0.0 (2023-10-30) - @mojavelinux
 
 Initial release.
+
 === Details
 
 {url-repo}/releases/tag/v1.0.0[git tag]
-
