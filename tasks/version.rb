@@ -24,13 +24,14 @@ changelog_contents = File.readlines changelog_file, mode: 'r:UTF-8'
 if (last_release_idx = changelog_contents.index {|l| (l.start_with? '== ') && (%r/^== \d/.match? l) })
   previous_release_version = (changelog_contents[last_release_idx].match %r/\d\S+/)[0]
 else
+  changelog_contents << %(#{changelog_contents.pop.chomp}\n)
+  changelog_contents << ?\n
   last_release_idx = changelog_contents.length
 end
 changelog_contents.insert last_release_idx, <<~END
 === Details
 
-{url-repo}/releases/tag/v#{release_version}[git tag]#{previous_release_version ? %( | {url-repo}/compare/v#{previous_release_version}\\...v#{release_version}[full diff]) : ''}
-
+{url-repo}/releases/tag/v#{release_version}[git tag]#{previous_release_version ? %( | {url-repo}/compare/v#{previous_release_version}\\...v#{release_version}[full diff]\n) : ''}
 END
 if (unreleased_idx = changelog_contents.index {|l| (l.start_with? '== Unreleased') && l.rstrip == '== Unreleased' })
   changelog_contents[unreleased_idx] = %(== #{release_version} (#{release_date}) - @#{release_user}\n)
