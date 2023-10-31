@@ -6,6 +6,7 @@ describe Guard::AsciiDoc do
   let(:subject_with_backend) { described_class.new backend: 'docbook' }
   let(:subject_with_unknown_backend) { described_class.new backend: 'jats' }
   let(:subject_with_watchers) { described_class.new watchers: [(Guard::Watcher.new %r/\.asciidoc$/)] }
+  let(:subject_with_attributes_as_array) { described_class.new attributes: ['toc'] }
   let(:subject_with_attributes_as_string) { described_class.new attributes: 'toc' }
 
   before do
@@ -42,6 +43,10 @@ describe Guard::AsciiDoc do
 
       it 'should initialize AsciiDoc attributes Hash and add env-guard entry' do
         (expect subject.asciidoc_opts).to include ({ attributes: { 'env-guard' => '' } })
+      end
+
+      it 'should add env-guard to AsciiDoc attributes if specified as an array' do
+        (expect subject_with_attributes_as_array.asciidoc_opts).to include ({ attributes: ['toc', 'env-guard'] })
       end
 
       it 'should add env-guard to AsciiDoc attributes if specified as a string' do
