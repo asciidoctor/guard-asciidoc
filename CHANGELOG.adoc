@@ -4,12 +4,16 @@
 This document provides a curated view of the changes to Guard AsciiDoc in each release.
 For a detailed view of what has changed, refer to the {url-repo}/commits/main[commit history] on GitHub.
 
-== Unreleased
+== 1.0.1 (2023-10-31) - @mojavelinux
 
 Fixed::
 
 * throw instead of raise :task_has_failed on failure
 * don't fail if gem for unknown backend is unavailable
+
+=== Details
+
+{url-repo}/releases/tag/v1.0.1[git tag] | {url-repo}/compare/v1.0.0\...v1.0.1[full diff]
 
 == 1.0.0 (2023-10-30) - @mojavelinux
 
